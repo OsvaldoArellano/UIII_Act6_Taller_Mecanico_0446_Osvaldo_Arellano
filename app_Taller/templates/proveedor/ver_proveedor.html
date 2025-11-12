@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Proveedores{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Listado de Proveedores</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'agregar_proveedor' %}" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i>Agregar Proveedor</a>
+        <form class="d-flex" method="GET" action="{% url 'ver_proveedor' %}">
+            <input class="form-control me-2" type="search" placeholder="Buscar proveedor..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if proveedores %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Empresa</th>
+                    <th>Contacto</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th>RFC Fiscal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                <tr>
+                    <td>{{ proveedor.pk }}</td>
+                    <td>{{ proveedor.nombre_empresa }}</td>
+                    <td>{{ proveedor.contacto_nombre }}</td>
+                    <td>{{ proveedor.telefono }}</td>
+                    <td>{{ proveedor.email }}</td>
+                    <td>{{ proveedor.direccion }}</td>
+                    <td>{{ proveedor.rfc_fiscal }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_proveedor' proveedor.pk %}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'borrar_proveedor' proveedor.pk %}" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay proveedores registrados.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

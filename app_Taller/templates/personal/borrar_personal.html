@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Borrar Personal{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4 text-center">
+        <h2 class="mb-4 text-danger">Confirmar Eliminación de Personal</h2>
+        <p class="lead">¿Estás seguro de que deseas eliminar a **{{ personal.nombre }} {{ personal.apellido }}** ({{ personal.cargo }})?</p>
+        <p class="text-muted">Esta acción es irreversible y eliminará al personal de la base de datos.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                <button type="submit" class="btn btn-danger btn-lg"><i class="fas fa-trash-alt me-2"></i>Sí, Eliminar Personal</button>
+                <a href="{% url 'ver_personal' %}" class="btn btn-secondary btn-lg"><i class="fas fa-times-circle me-2"></i>Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

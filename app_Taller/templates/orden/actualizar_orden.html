@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualizar Orden{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-center text-primary">Actualizar Orden #{{ orden.id }}</h2>
+        <form method="post" action="{% url 'realizar_actualizacion_orden' orden.pk %}">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_vehiculo" class="form-label">Vehículo:</label>
+                    <select class="form-select" id="id_vehiculo" name="vehiculo" required>
+                        {% for v in vehiculos %}
+                            <option value="{{ v.id }}" {% if v.id == orden.vehiculo.id %}selected{% endif %}>
+                                {{ v.matricula }} - {{ v.marca }} {{ v.modelo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_cliente" class="form-label">Cliente:</label>
+                    <select class="form-select" id="id_cliente" name="cliente" required>
+                        {% for c in clientes %}
+                            <option value="{{ c.id }}" {% if c.id == orden.cliente.id %}selected{% endif %}>
+                                {{ c.nombre }} {{ c.apellido }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_personal_recepcion" class="form-label">Personal de Recepción:</label>
+                    <select class="form-select" id="id_personal_recepcion" name="personal_recepcion">
+                        <option value="">-- Seleccione --</option>
+                        {% for p in personal_list %}
+                            <option value="{{ p.id }}" {% if orden.personal_recepcion and p.id == orden.personal_recepcion.id %}selected{% endif %}>
+                                {{ p.nombre }} {{ p.apellido }} ({{ p.cargo }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_personal_mecanico" class="form-label">Personal Mecánico:</label>
+                    <select class="form-select" id="id_personal_mecanico" name="personal_mecanico">
+                        <option value="">-- Seleccione --</option>
+                        {% for p in personal_list %}
+                            <option value="{{ p.id }}" {% if orden.personal_mecanico and p.id == orden.personal_mecanico.id %}selected{% endif %}>
+                                {{ p.nombre }} {{ p.apellido }} ({{ p.cargo }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_fecha_entrada" class="form-label">Fecha de Entrada:</label>
+                    <input type="datetime-local" class="form-control" id="id_fecha_entrada"
+                           value="{{ orden.fecha_entrada|date:'Y-m-d\\TH:i' }}" disabled>
+                    <small class="text-muted">Esta fecha se genera automáticamente y no puede ser modificada</small>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_fecha_salida_estimada" class="form-label">Fecha Salida Estimada:</label>
+                    <input type="datetime-local" class="form-control" id="id_fecha_salida_estimada" name="fecha_salida_estimada"
+                           value="{{ orden.fecha_salida_estimada|date:'Y-m-d\\TH:i' }}" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_fecha_salida" class="form-label">Fecha Salida Real:</label>
+                    <input type="datetime-local" class="form-control" id="id_fecha_salida" name="fecha_salida"
+                           value="{{ orden.fecha_salida|date:'Y-m-d\\TH:i' }}">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_problema" class="form-label">Descripción del Problema:</label>
+                <textarea class="form-control" id="id_problema" name="problema" rows="3" required>{{ orden.problema }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_testigos_encendidos" class="form-label">Testigos Encendidos:</label>
+                <textarea class="form-control" id="id_testigos_encendidos" name="testigos_encendidos" rows="2">{{ orden.testigos_encendidos }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_estado" class="form-label">Estado de la Orden:</label>
+                <select class="form-select" id="id_estado" name="estado" required>
+                    <option value="Pendiente" {% if orden.estado == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                    <option value="En Proceso" {% if orden.estado == 'En Proceso' %}selected{% endif %}>En Proceso</option>
+                    <option value="Completada" {% if orden.estado == 'Completada' %}selected{% endif %}>Completada</option>
+                    <option value="Cancelada" {% if orden.estado == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                </select>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary mt-3">
+                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                </button>
+                <a href="{% url 'ver_orden' %}" class="btn btn-secondary mt-2">
+                    <i class="fas fa-arrow-left me-2"></i>Cancelar y Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Clientes{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Listado de Clientes</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'agregar_cliente' %}" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i>Agregar Cliente</a>
+        <form class="d-flex" method="GET" action="{% url 'ver_cliente' %}">
+            <input class="form-control me-2" type="search" placeholder="Buscar cliente..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if clientes %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Imagen</th>
+                    <th>Nombre Completo</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>RFC</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.pk }}</td>
+                    <td>
+                        {% if cliente.imagen %}
+                        <img src="{{ cliente.imagen.url }}" alt="{{ cliente.nombre }}" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                        {% else %}
+                        <img src="https://via.placeholder.com/50/CCCCCC/FFFFFF?text=NoImg" alt="Sin imagen" class="rounded-circle" width="50" height="50">
+                        {% endif %}
+                    </td>
+                    <td>{{ cliente.nombre }} {{ cliente.apellido }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.rfc }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_cliente' cliente.pk %}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'borrar_cliente' cliente.pk %}" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay clientes registrados.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

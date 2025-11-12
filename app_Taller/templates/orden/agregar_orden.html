@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Agregar Orden{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-center text-primary">Crear Nueva Orden de Servicio</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_cliente" class="form-label">Cliente:</label>
+                    <select class="form-select" id="id_cliente" name="cliente" required>
+                        <option value="">Seleccione un cliente</option>
+                        {% for cli in clientes %}
+                            <option value="{{ cli.pk }}">{{ cli.nombre }} {{ cli.apellido }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_vehiculo" class="form-label">Vehículo:</label>
+                    <select class="form-select" id="id_vehiculo" name="vehiculo" required>
+                        <option value="">Seleccione un vehículo</option>
+                        {% for veh in vehiculos %}
+                            <option value="{{ veh.pk }}">{{ veh.matricula }} ({{ veh.marca }} {{ veh.modelo }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_personal_recepcion" class="form-label">Personal de Recepción:</label>
+                    <select class="form-select" id="id_personal_recepcion" name="personal_recepcion" required>
+                        <option value="">Seleccione personal</option>
+                        {% for pers in personal_list %}
+                            <option value="{{ pers.pk }}">{{ pers.nombre }} {{ pers.apellido }} ({{ pers.cargo }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_personal_mecanico" class="form-label">Personal Mecánico Asignado:</label>
+                    <select class="form-select" id="id_personal_mecanico" name="personal_mecanico" required>
+                        <option value="">Seleccione personal</option>
+                        {% for pers in personal_list %}
+                            <option value="{{ pers.pk }}">{{ pers.nombre }} {{ pers.apellido }} ({{ pers.cargo }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="id_fecha_salida_estimada" class="form-label">Fecha de Salida Estimada:</label>
+                    <input type="datetime-local" class="form-control" id="id_fecha_salida_estimada" name="fecha_salida_estimada" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="id_fecha_salida" class="form-label">Fecha de Salida (Opcional):</label>
+                <input type="datetime-local" class="form-control" id="id_fecha_salida" name="fecha_salida">
+            </div>
+            <div class="mb-3">
+                <label for="id_problema" class="form-label">Problema Reportado:</label>
+                <textarea class="form-control" id="id_problema" name="problema" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="id_testigos_encendidos" class="form-label">Testigos Encendidos (Opcional):</label>
+                <input type="text" class="form-control" id="id_testigos_encendidos" name="testigos_encendidos">
+            </div>
+            <div class="mb-3">
+                <label for="id_estado" class="form-label">Estado:</label>
+                <input type="text" class="form-control" id="id_estado" name="estado" required>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-plus-circle me-2"></i>Crear Orden</button>
+                <a href="{% url 'ver_orden' %}" class="btn btn-secondary mt-2"><i class="fas fa-arrow-left me-2"></i>Cancelar y Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

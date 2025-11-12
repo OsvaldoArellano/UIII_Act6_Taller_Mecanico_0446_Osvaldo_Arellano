@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Órdenes{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Listado de Órdenes de Servicio</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'agregar_orden' %}" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i>Crear Orden</a>
+        <form class="d-flex" method="GET" action="{% url 'ver_orden' %}">
+            <input class="form-control me-2" type="search" placeholder="Buscar orden..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if ordenes %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID Orden</th>
+                    <th>Vehículo (Matrícula)</th>
+                    <th>Cliente</th>
+                    <th>Recepción</th>
+                    <th>Mecánico</th>
+                    <th>F. Entrada</th>
+                    <th>F. Salida Estimada</th>
+                    <th>F. Salida</th>
+                    <th>Problema</th>
+                    <th>Testigos</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for orden in ordenes %}
+                <tr>
+                    <td>{{ orden.pk }}</td>
+                    <td>{{ orden.vehiculo.matricula }} ({{ orden.vehiculo.marca }})</td>
+                    <td>{{ orden.cliente.nombre }} {{ orden.cliente.apellido }}</td>
+                    <td>{{ orden.personal_recepcion.nombre }}</td>
+                    <td>{{ orden.personal_mecanico.nombre }}</td>
+                    <td>{{ orden.fecha_entrada|date:"d M Y H:i" }}</td>
+                    <td>{{ orden.fecha_salida_estimada|date:"d M Y H:i" }}</td>
+                    <td>{% if orden.fecha_salida %}{{ orden.fecha_salida|date:"d M Y H:i" }}{% else %}N/A{% endif %}</td>
+                    <td>{{ orden.problema|truncatechars:50 }}</td>
+                    <td>{{ orden.testigos_encendidos|default:"N/A"|truncatechars:30 }}</td>
+                    <td>{{ orden.estado }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_orden' orden.pk %}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'borrar_orden' orden.pk %}" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay órdenes de servicio registradas.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualizar Vehículo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-center text-primary">Actualizar Vehículo: {{ vehiculo.marca }} {{ vehiculo.modelo }} ({{ vehiculo.matricula }})</h2>
+        <form method="post" action="{% url 'realizar_actualizacion_vehiculo' vehiculo.pk %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_cliente" class="form-label">Cliente:</label>
+                <select class="form-select" id="id_cliente" name="cliente" required>
+                    <option value="">Seleccione un cliente</option>
+                    {% for cli in clientes %}
+                        <option value="{{ cli.pk }}" {% if cli == vehiculo.cliente %}selected{% endif %}>{{ cli.nombre }} {{ cli.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_matricula" class="form-label">Matrícula:</label>
+                    <input type="text" class="form-control" id="id_matricula" name="matricula" value="{{ vehiculo.matricula }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_marca" class="form-label">Marca:</label>
+                    <input type="text" class="form-control" id="id_marca" name="marca" value="{{ vehiculo.marca }}" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_modelo" class="form-label">Modelo:</label>
+                    <input type="text" class="form-control" id="id_modelo" name="modelo" value="{{ vehiculo.modelo }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="id_anio" class="form-label">Año:</label>
+                    <input type="number" class="form-control" id="id_anio" name="anio" value="{{ vehiculo.anio }}" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="id_kilometraje" class="form-label">Kilometraje:</label>
+                <input type="number" class="form-control" id="id_kilometraje" name="kilometraje" value="{{ vehiculo.kilometraje }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_imagen" class="form-label">Imagen Actual:</label><br>
+                {% if vehiculo.imagen %}
+                <img src="{{ vehiculo.imagen.url }}" alt="{{ vehiculo.marca }}" class="img-thumbnail mb-2" width="150">
+                {% else %}
+                <p>No hay imagen actual.</p>
+                {% endif %}
+                <input type="file" class="form-control" id="id_imagen" name="imagen" accept="image/*">
+                <small class="form-text text-muted">Deja en blanco para mantener la imagen actual.</small>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-save me-2"></i>Guardar Cambios</button>
+                <a href="{% url 'ver_vehiculo' %}" class="btn btn-secondary mt-2"><i class="fas fa-arrow-left me-2"></i>Cancelar y Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

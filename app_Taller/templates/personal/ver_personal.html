@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Personal{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Listado de Personal</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'agregar_personal' %}" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i>Agregar Personal</a>
+        <form class="d-flex" method="GET" action="{% url 'ver_personal' %}">
+            <input class="form-control me-2" type="search" placeholder="Buscar personal..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if personal_list %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Imagen</th>
+                    <th>Nombre Completo</th>
+                    <th>Cargo</th>
+                    <th>Fecha Contratación</th>
+                    <th>Salario Base</th>
+                    <th>Teléfono Contacto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for persona in personal_list %}
+                <tr>
+                    <td>{{ persona.pk }}</td>
+                    <td>
+                        {% if persona.imagen %}
+                        <img src="{{ persona.imagen.url }}" alt="{{ persona.nombre }}" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                        {% else %}
+                        <img src="https://via.placeholder.com/50/CCCCCC/FFFFFF?text=NoImg" alt="Sin imagen" class="rounded-circle" width="50" height="50">
+                        {% endif %}
+                    </td>
+                    <td>{{ persona.nombre }} {{ persona.apellido }}</td>
+                    <td>{{ persona.cargo }}</td>
+                    <td>{{ persona.fecha_contratacion|date:"d M Y" }}</td>
+                    <td>${{ persona.salario_base }}</td>
+                    <td>{{ persona.telefono_contacto }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_personal' persona.pk %}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'borrar_personal' persona.pk %}" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay personal registrado.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

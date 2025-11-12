@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Refacciones{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Listado de Refacciones</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'agregar_refaccion' %}" class="btn btn-primary"><i class="fas fa-plus-circle me-2"></i>Agregar Refacción</a>
+        <form class="d-flex" method="GET" action="{% url 'ver_refaccion' %}">
+            <input class="form-control me-2" type="search" placeholder="Buscar refacción..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if refacciones %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Proveedor</th>
+                    <th>Nombre</th>
+                    <th>Referencia</th>
+                    <th>Stock</th>
+                    <th>Precio Compra</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for refaccion in refacciones %}
+                <tr>
+                    <td>{{ refaccion.pk }}</td>
+                    <td>{{ refaccion.proveedor.nombre_empresa }}</td>
+                    <td>{{ refaccion.nombre }}</td>
+                    <td>{{ refaccion.referencia }}</td>
+                    <td>{{ refaccion.stock }}</td>
+                    <td>${{ refaccion.precio_compra }}</td>
+                    <td>
+                        <a href="{% url 'actualizar_refaccion' refaccion.pk %}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'borrar_refaccion' refaccion.pk %}" class="btn btn-danger btn-sm" title="Borrar"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay refacciones registradas.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

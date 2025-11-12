@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualizar Detalle de Orden{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-center text-primary">Actualizar Detalle #{{ detalle.id }}</h2>
+        <form method="post" action="{% url 'realizar_actualizacion_detalleorden' detalle.pk %}">
+            {% csrf_token %}
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_orden" class="form-label">Orden:</label>
+                    <select class="form-select" id="id_orden" name="orden" required>
+                        {% for o in ordenes %}
+                            <option value="{{ o.id }}" {% if o.id == detalle.orden.id %}selected{% endif %}>
+                                Orden #{{ o.id }} - {{ o.vehiculo.marca }} {{ o.vehiculo.modelo }} ({{ o.cliente.nombre }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_tipo_cargo" class="form-label">Tipo de Cargo:</label>
+                    <select class="form-select" id="id_tipo_cargo" name="tipo_cargo" required>
+                        <option value="servicio" {% if detalle.tipo_cargo == 'servicio' %}selected{% endif %}>Servicio</option>
+                        <option value="refaccion" {% if detalle.tipo_cargo == 'refaccion' %}selected{% endif %}>Refacción</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="id_servicio" class="form-label">Servicio (opcional):</label>
+                    <select class="form-select" id="id_servicio" name="servicio">
+                        <option value="">-- Seleccione --</option>
+                        {% for s in servicios %}
+                            <option value="{{ s.id }}" {% if detalle.servicio and s.id == detalle.servicio.id %}selected{% endif %}>
+                                {{ s.nombre_servicio }} - ${{ s.precio_base }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="id_refaccion" class="form-label">Refacción (opcional):</label>
+                    <select class="form-select" id="id_refaccion" name="refaccion">
+                        <option value="">-- Seleccione --</option>
+                        {% for r in refacciones %}
+                            <option value="{{ r.id }}" {% if detalle.refaccion and r.id == detalle.refaccion.id %}selected{% endif %}>
+                                {{ r.nombre }} - ${{ r.precio_compra }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_descripcion" class="form-label">Descripción:</label>
+                <textarea class="form-control" id="id_descripcion" name="descripcion" rows="3" required>{{ detalle.descripcion }}</textarea>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="id_cantidad_uni_hr" class="form-label">Cantidad / Horas:</label>
+                    <input type="number" step="0.01" class="form-control" id="id_cantidad_uni_hr" name="cantidad_uni_hr"
+                           value="{{ detalle.cantidad_uni_hr }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="id_precio_unitario" class="form-label">Precio Unitario:</label>
+                    <input type="number" step="0.01" class="form-control" id="id_precio_unitario" name="precio_unitario"
+                           value="{{ detalle.precio_unitario }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="id_subtotal" class="form-label">Subtotal:</label>
+                    <input type="number" step="0.01" class="form-control" id="id_subtotal" name="subtotal"
+                           value="{{ detalle.subtotal }}" readonly required>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary mt-3">
+                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                </button>
+                <a href="{% url 'ver_detalleorden' %}" class="btn btn-secondary mt-2">
+                    <i class="fas fa-arrow-left me-2"></i>Cancelar y Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Recalcular subtotal automáticamente al modificar cantidad o precio
+    document.addEventListener('DOMContentLoaded', function() {
+        const cantidad = document.getElementById('id_cantidad_uni_hr');
+        const precio = document.getElementById('id_precio_unitario');
+        const subtotal = document.getElementById('id_subtotal');
+
+        function calcularSubtotal() {
+            const c = parseFloat(cantidad.value) || 0;
+            const p = parseFloat(precio.value) || 0;
+            subtotal.value = (c * p).toFixed(2);
+        }
+
+        cantidad.addEventListener('input', calcularSubtotal);
+        precio.addEventListener('input', calcularSubtotal);
+    });
+</script>
+{% endblock %}

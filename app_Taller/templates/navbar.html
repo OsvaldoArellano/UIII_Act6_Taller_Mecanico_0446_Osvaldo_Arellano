@@ -1,0 +1,89 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'inicio_taller' %}">
+            <i class="fas fa-tools me-2"></i>Sistema de Administración Taller Mecánico
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="{% url 'inicio_taller' %}"><i class="fas fa-home me-1"></i>Inicio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="clienteDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-tie me-1"></i>Cliente
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="clienteDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_cliente' %}">Agregar Cliente</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_cliente' %}">Ver Clientes</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="vehiculoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-car me-1"></i>Vehículo
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="vehiculoDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_vehiculo' %}">Agregar Vehículo</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_vehiculo' %}">Ver Vehículos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="personalDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-users-cog me-1"></i>Personal
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="personalDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_personal' %}">Agregar Personal</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_personal' %}">Ver Personal</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="proveedorDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-truck-moving me-1"></i>Proveedor
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="proveedorDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_proveedor' %}">Agregar Proveedor</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_proveedor' %}">Ver Proveedores</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="refaccionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cogs me-1"></i>Refacciones
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="refaccionDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_refaccion' %}">Agregar Refacción</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_refaccion' %}">Ver Refacciones</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-wrench me-1"></i>Servicios
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicioDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_servicio' %}">Agregar Servicio</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_servicio' %}">Ver Servicios</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ordenDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-clipboard-list me-1"></i>Orden
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="ordenDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_orden' %}">Agregar Orden</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_orden' %}">Ver Órdenes</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="detalleOrdenDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar me-1"></i>Detalle Orden
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="detalleOrdenDropdown">
+                        <li><a class="dropdown-item" href="{% url 'agregar_detalleorden' %}">Agregar Detalle</a></li>
+                        <li><a class="dropdown-item" href="{% url 'ver_detalleorden' %}">Ver Detalles</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

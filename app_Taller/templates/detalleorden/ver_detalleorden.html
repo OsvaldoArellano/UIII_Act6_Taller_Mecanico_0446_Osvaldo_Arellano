@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Ver Detalles de Órdenes{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Listado de Detalles de Órdenes</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'agregar_detalleorden' %}" class="btn btn-primary">
+            <i class="fas fa-plus-circle me-2"></i>Agregar Detalle de Orden
+        </a>
+        <form class="d-flex" method="GET" action="{% url 'ver_detalleorden' %}">
+            <input class="form-control me-2" type="search" placeholder="Buscar detalle..." aria-label="Search" name="q" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+
+    {% if detalles %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Orden</th>
+                    <th>Tipo de Cargo</th>
+                    <th>Servicio</th>
+                    <th>Refacción</th>
+                    <th>Descripción</th>
+                    <th>Cantidad / Hrs</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for det in detalles %}
+                <tr class="text-center">
+                    <td>{{ det.pk }}</td>
+                    <td>
+                        Orden #{{ det.orden.pk }}<br>
+                        <small>{{ det.orden.vehiculo.marca }} {{ det.orden.vehiculo.modelo }}</small>
+                    </td>
+                    <td>{{ det.tipo_cargo|title }}</td>
+                    <td>{% if det.servicio %}{{ det.servicio.nombre_servicio }}{% else %}-{% endif %}</td>
+                    <td>{% if det.refaccion %}{{ det.refaccion.nombre }}{% else %}-{% endif %}</td>
+                    <td class="text-start">{{ det.descripcion|truncatechars:60 }}</td>
+                    <td>{{ det.cantidad_uni_hr }}</td>
+                    <td>${{ det.precio_unitario }}</td>
+                    <td><strong>${{ det.subtotal }}</strong></td>
+                    <td>
+                        <a href="{% url 'actualizar_detalleorden' det.pk %}" class="btn btn-warning btn-sm" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'borrar_detalleorden' det.pk %}" class="btn btn-danger btn-sm" title="Borrar">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay detalles de órdenes registrados.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

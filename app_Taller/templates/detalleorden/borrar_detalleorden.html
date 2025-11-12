@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Borrar Detalle de Orden{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4 text-center">
+        <h2 class="mb-4 text-danger">Confirmar Eliminación de Detalle de Orden</h2>
+        <p class="lead">
+            ¿Estás seguro de que deseas eliminar el <strong>Detalle #{{ detalle.id }}</strong> 
+            perteneciente a la <strong>Orden #{{ detalle.orden.id }}</strong>?
+        </p>
+
+        <p class="lead">
+            <strong>Tipo de cargo:</strong> {{ detalle.tipo_cargo|title }}<br>
+            {% if detalle.servicio %}
+                <strong>Servicio:</strong> {{ detalle.servicio.nombre }}<br>
+            {% elif detalle.refaccion %}
+                <strong>Refacción:</strong> {{ detalle.refaccion.nombre }}<br>
+            {% endif %}
+            <strong>Descripción:</strong> {{ detalle.descripcion }}<br>
+            <strong>Subtotal:</strong> ${{ detalle.subtotal }}
+        </p>
+
+        <p class="text-muted">
+            Esta acción es irreversible y eliminará este registro del detalle de la base de datos.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-2 col-6 mx-auto mt-4">
+                <button type="submit" class="btn btn-danger btn-lg">
+                    <i class="fas fa-trash-alt me-2"></i>Sí, Eliminar Detalle
+                </button>
+                <a href="{% url 'ver_detalleorden' %}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-times-circle me-2"></i>Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
